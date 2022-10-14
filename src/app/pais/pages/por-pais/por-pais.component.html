@@ -1,0 +1,50 @@
+
+
+<div class="animate__animated animate__fadeIn animate__faster">
+    <h2>Por país</h2>
+<hr>
+
+
+<div class="row">
+    <div class="col">
+    <app-pais-input
+       (onEnter)="buscar( $event )" 
+       (onDebounce)="sugerencias( $event)"
+       placeholder="Buscar país...">
+    </app-pais-input><!--a CONTINUACION ESCUCHAMOS EL EVENTO ON ENTER DEFINIDO EN PAISINPUT.COMPONENT-->
+    </div>
+</div>
+    <ul *ngIf="mostrarSugerencias"
+    class="list-group">
+        <li *ngFor="let pais of paisesSugeridos"
+        class="list-group-item list-group-item-action">
+            <a   class="nav-link"
+                 [routerLink]="['/pais', pais.alpha2Code]">
+                {{ pais.name }}
+                </a>
+        </li>
+        <li class="list-group-item list-group-item-action"
+        (click)="buscarSugerido( termino )">
+            <a   class="nav-link">
+                Buscar "{{ termino }}"
+                </a>
+        </li>
+    </ul>
+
+
+</div>
+<!-- manejamos el Error con ngIF si hay error mostraremos el mensaje en caso contrario no se muestra 
+{{ termino }} hace referencia al mensaje añadido en el input  -->
+<div *ngIf="hayError" 
+    class="alert alert-danger">
+    No se encontró nada con el {{ termino }}
+</div>
+<!-- Si no hay error con ngIf mostraremos la tabla con los resultados 
+    sino en su lugar solo se mostrara el mensaje de error  -->
+<div *ngIf="paises.length > 0" class="row"> <!-- si el indice de los paises es mayor a cero se mostrra la tabla -->
+    <div class="col">
+
+      <app-pais-tabla [paises]="paises"></app-pais-tabla>
+
+    </div>
+</div>
